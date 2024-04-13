@@ -1,8 +1,0 @@
-@font-face {
-    font-family: AvenirNext;
-    src: url("path/AvenirNext-Regular.otf") format("opentype");
-}
-
-* {
-  font-family: 'AvenirNext', serif;
-}
